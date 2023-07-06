@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('intervals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('day_id');
+            $table->time('from');
+            $table->time('to');
             $table->timestamps();
         });
     }

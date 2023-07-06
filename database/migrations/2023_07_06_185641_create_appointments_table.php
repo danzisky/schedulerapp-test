@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('interval_id');
+            $table->unsignedBigInteger('consultant_id');
+            $table->string('title');
+            $table->mediumText('description')->nullable();
             $table->timestamps();
         });
     }
