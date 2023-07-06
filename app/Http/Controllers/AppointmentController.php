@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Day;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -12,15 +13,27 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        $appointments = Appointment::all();
+        return view('app.appointments.index', compact('appointments'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->replace([
+            'date' => date('Y-m-d'),
+        ]);
+        $day = Day::firstOrCreate([
+            'date' => $request->date,
+         ], []);
+         
+        $intervals = $day->intervals;
+        if(count($intervals) < 1) {
+            $day->makeIntervals();
+        };
+        return view('app.appointments.create');
     }
 
     /**
@@ -28,7 +41,12 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $appointment = Appointment::create([
+            'title' => $request->title,
+            'description' => $request->description ?? '',
+            'consultant_id' => $request->consultant_id,
+            'interval_id' => $request->interval_id,
+        ]);
     }
 
     /**

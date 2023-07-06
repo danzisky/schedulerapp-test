@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ConsultantController;
+use App\Http\Controllers\IntervalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('appointments', AppointmentController::class);
+Route::resource('consultants', ConsultantController::class);
+Route::resource('intervals', IntervalController::class);
 
 require __DIR__.'/auth.php';
