@@ -22,7 +22,7 @@ class IntervalController extends Controller
     {   $date = $request->date;
         $cdate = Carbon::parse($date);
         if(!$cdate->isWeekday()) {
-            abort(400, "Error. $cdate->englishDayOfWeek, is not a weekday");
+            abort(400, "Error. $cdate->englishDayOfWeek, is not a work day, please select a different date.");
         }
         $day = Day::firstOrCreate([
             'date' => $request->date,
