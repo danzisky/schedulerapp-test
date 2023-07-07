@@ -15,7 +15,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::where('user_id', '=', Auth::user()->id);
+        $appointments = Appointment::where('user_id', Auth::user()->id)->get();
         return view('app.appointments.index', compact('appointments'));
     }
 
@@ -26,8 +26,8 @@ class AppointmentController extends Controller
     {
        
         $consultants = Consultant::all();
-         
-        return view('app.appointments.create', compact('consultants'));
+         $user = Auth::user();
+        return view('app.appointments.create', compact('consultants', 'user'));
     }
 
     /**
@@ -35,8 +35,10 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $appointment = Appointment::create([
             'title' => $request->title,
+            'user_id' => Auth::user()->id,
             'description' => $request->description ?? '',
             'consultant_id' => $request->consultant_id,
             'interval_id' => $request->interval_id,

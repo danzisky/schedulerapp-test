@@ -7,7 +7,7 @@
     
     <div id="app" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('appointments.create') }}">Create Appintment</a>
+            <a class="my-4" href="{{ route('appointments.index') }}">Appointments</a>
             <div class="flex flex-row space-x-4">
                 <div class="w-full flex flex-col space-y-4 max-w-3xl">
                     <div>
@@ -18,14 +18,18 @@
                             <div>
                                 {{ $consultant->name }}
                             </div>
-                            <button @@click="getConsutantShedule('{{ route('consultants.intervals', $consultant->id ) }}', '{{ $consultant->name }}')">
+                            <button @@click="getConsutantShedule('{{ route('consultants.intervals', $consultant->id ) }}', '{{ $consultant->name }}', '{{ $consultant->id }}')">
                                 See Times
                             </button>
                         </div>
                     @endforeach
                 </div>
                 <div class="p-4 bg-gray-200">
-                    <div>@{{ message }}</div>
+                    <div class="col flex-col space-y-3">
+
+                        <input type="text" name="title" placeholder="title" v-model="title" id="">
+                        <textarea type="text" name="description" placeholder="description" v-model="description" id=""></textarea>
+                    </div>
                     <div class="my-2">@{{ date }}
                         <span v-if="consultant" class="p-2 bg-gray-300">
                             @{{ consultant }}
@@ -35,9 +39,18 @@
                     <div class="flex flex-col space-y-2">
                         <div v-if="intvals?.length < 1">Please select a consultant</div>
                         <div v-for="interval in intvals">
-                            <a href="appointments">
-                                @{{ interval.from }} - @{{ interval.to }}
-                            </a>
+                            <form action="{{ route('appointments.store') }}" method="post">
+                                <input class="hidden" type="text" name="_token" id="" v-model="csrf">
+                                <input class="hidden" type="text" name="day_id" v-model="interval.day_id">
+                                <input class="hidden" type="text" name="interval_id" v-model="interval.id">
+                                <input class="hidden" type="text" name="consultant_id" v-model="consultant_id">
+                                <input class="hidden" type="text" name="title" v-model="title">
+                                <input class="hidden" type="text" name="description" v-model="description">
+                                <input class="hidden" type="text" name="user_id" value="{{ $user->id }}">
+                                <button>
+                                    @{{ interval.from }} - @{{ interval.to }}
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -52,9 +65,12 @@
     createApp({
         data() {
             return {
-                message: 'Hello Vue!',
+                title: 'Consultation',
+                description: 'How to be a better dev',
                 intervals: [],
+                csrf: '{{ csrf_token() }}',
                 consultant: null,
+                consultant_id: null,
                 date: '{{ date('Y-m-d') }}',
             }
         },
@@ -71,12 +87,13 @@
             }
         },
         methods: {
-            getConsutantShedule(url, name) {
+            getConsutantShedule(url, name, id) {
                 axios.post(url, {
                     date: this.date
                 })
                 .then(res => {
                     this.consultant = name
+                    this.consultant_id = id
                     this.intervals = res.data
                 })
                 .catch(err => {

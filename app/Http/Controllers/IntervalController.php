@@ -32,7 +32,7 @@ class IntervalController extends Controller
             $intervals = $day->makeIntervals()->$intervals;
         };
         $consultantBookedIntervals = $consultant->appointments()->whereIn('interval_id', $day->intervals->pluck('id'))->pluck('interval_id');
-        $intervals = $day->intervals->whereNotIn('id', $consultantBookedIntervals);
+        $intervals = $day->intervals()->whereNotIn('id', $consultantBookedIntervals)->get();
 
         return $intervals; 
     }

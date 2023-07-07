@@ -9,10 +9,11 @@ class Appointment extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     public function interval() {
-        return $this->hasOne(Interval::class);
+        return $this->belongsTo(Interval::class);
     }
     public function consultant() {
-        return $this->hasOne(Consultant::class);
+        return $this->belongsTo(Consultant::class);
     }
 }
