@@ -35,7 +35,6 @@
                             @{{ consultant }}
                         </span>
                     </div>
-                    {{-- <div>@{{ intvals }}</div> --}}
                     <div class="flex flex-col space-y-2">
                         <div v-if="intvals?.length < 1">Please select a consultant</div>
                         <div v-for="interval in intvals">
@@ -104,7 +103,6 @@
         },
         watch: {
             date() {
-                // alert(this.date)
                 return this.intervals = []
             }
         }
