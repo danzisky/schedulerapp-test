@@ -31,7 +31,7 @@ class AppointmentController extends Controller
          
         $intervals = $day->intervals;
         if(count($intervals) < 1) {
-            $day->makeIntervals();
+            $intervals = $day->makeIntervals()->$intervals;
         };
         return view('app.appointments.create');
     }

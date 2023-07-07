@@ -18,15 +18,19 @@ class Day extends Model
     }
 
     public function makeIntervals() {
+        /* implementation can be done for durations to be passed dynamiaclly */
         $start = '09:00:00';
         $end = '13:00:00';
 
-        $this->divideDay($start, $end);
-
+        $this->intervals()->createMany($this->divideDay($start, $end));
+        
         $start = '15:30:00';
         $end = '21:00:00';
-
+        
         $this->divideDay($start, $end);
+        $this->intervals()->createMany($this->divideDay($start, $end));
+
+        return $this;
     }
 
     public function divideDay($start, $end) {
@@ -35,16 +39,16 @@ class Day extends Model
 
         $cStart = Carbon::parse("$date $start");
         $cEnd = Carbon::parse("$date $end");
-        dump((string) $cStart, (string) $cEnd);
         $cInterval = $cStart;
 
         while ($cEnd->greaterThan($cInterval)) {
             $intervals[] = [
-                'from' => (string) $cInterval,
-                'to' => (string) $cInterval->addHour(),
+                'from' => (string) $cInterval->format('H:i:s'),
+                'to' => (string) $cInterval->addHour()->format('H:i:s'),
             ];
-            $cInterval = $cInterval->addMinutes(30);
+            $cInterval = $cInterval->addMinutes(30); /* adding wait between sessions */
         };
-        dump($intervals);
+        
+        return $intervals;
     }
 }
