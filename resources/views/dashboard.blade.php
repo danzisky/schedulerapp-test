@@ -7,14 +7,16 @@
     
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a href="{{ route('appointments.create') }}">Create Appintment</a>
+            <div class="text-xl font-semibold">
+                <a href="{{ route('appointments.create') }}">Create Appintment</a>
+            </div>
             <div class="">
-                <div class="my-6">
+                <div class="text-2xl font-semibold my-6">
                     Next Appointments
                 </div>
                 <div class="flex flex-col space-y-4">
                 @foreach ($appointments as $appointment)
-                <div class="w-full columns-2 bg-white p-4">
+                <a href="{{ route('appointments.show', $appointment->id) }}" class="w-full columns-2 bg-white p-4 hover:bg-gray-200">
                     <div>
                         Consultant: {{ $appointment->consultant->name }}
                     </div> 
@@ -33,7 +35,7 @@
                     <div>
                         To: {{ $appointment->interval->to }}
                     </div> 
-                </div>
+                </a>
                 @endforeach
             </div>
             </div>

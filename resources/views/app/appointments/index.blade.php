@@ -7,7 +7,9 @@
     
     <div id="app" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a class="my-4" href="{{ route('appointments.create') }}">Make New Appointment</a>
+            <div  class="my-6 font-semibold text-2xl">
+                <a class="my-4" href="{{ route('appointments.create') }}">Make New Appointment</a>
+            </div>
             @if ($success ?? false)
                 <div class="my-2 p-4 bg-gray-300">
                     {{ $success }}
@@ -20,7 +22,7 @@
             @endif
             <div class="flex flex-col space-y-4">
                 @foreach ($appointments as $appointment)
-                <div class="w-full columns-2 bg-white p-4">
+                <a href="{{ route('appointments.show', $appointment->id) }}" class="w-full columns-2 bg-white p-4 hover:bg-gray-200" >
                     <div>
                         Consultant: {{ $appointment->consultant->name }}
                     </div> 
@@ -39,7 +41,7 @@
                     <div>
                         To: {{ $appointment->interval->to }}
                     </div> 
-                </div>
+                </a>
                 @endforeach
             </div>
         </div>

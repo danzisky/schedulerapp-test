@@ -1,36 +1,45 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            Appointments
         </h2>
     </x-slot>
     
     <div id="app" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <a class="my-4" href="{{ route('appointments.index') }}">Appointments</a>
+            <div class="py-6 text-xl">
+                <a href="{{ route('appointments.index') }}">Appointments</a>
+            </div>
             <div class="flex flex-row space-x-4">
                 <div class="w-full flex flex-col space-y-4 max-w-3xl">
                     <div>
+                        <div>Pick an appointment date</div>
                         <input type="date" value="" name="" id="" v-model="date" min="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="my-6 font-semibold text-2xl">
+                        Consultants
                     </div>
                     @foreach ($consultants as $consultant)
                         <div class="w-full p-4 flex justify-between  items-center bg-white">
                             <div>
                                 {{ $consultant->name }}
                             </div>
-                            <button @@click="getConsutantShedule('{{ route('consultants.intervals', $consultant->id ) }}', '{{ $consultant->name }}', '{{ $consultant->id }}')">
-                                See Times
+                            <button class="bg-gray-300 p-4 rounded-sm" @@click="getConsutantShedule('{{ route('consultants.intervals', $consultant->id ) }}', '{{ $consultant->name }}', '{{ $consultant->id }}')">
+                                See Available Slots >>
                             </button>
                         </div>
                     @endforeach
                 </div>
                 <div class="p-4 bg-gray-200">
+                    <div class="my-4 font-semibold text-2xl">
+                        Appointment Details
+                    </div>
                     <div class="col flex-col space-y-3">
 
                         <input type="text" name="title" placeholder="title" v-model="title" id="">
                         <textarea type="text" name="description" placeholder="description" v-model="description" id=""></textarea>
                     </div>
-                    <div class="my-2">@{{ date }}
+                    <div class="my-3 font-semibold">@{{ date }}
                         <span v-if="consultant" class="p-2 bg-gray-300">
                             @{{ consultant }}
                         </span>

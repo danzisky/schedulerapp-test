@@ -7,9 +7,9 @@
     
     <div id="app" class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="flex justify-between">
-                <a class="my-4" href="{{ route('appointments.create') }}">Make New Appointment</a>
+            <div class="flex justify-between text-xl font-semibold py-4">
                 <a class="my-4" href="{{ route('appointments.create') }}">Appointments</a>
+                <a class="my-4" href="{{ route('appointments.create') }}">Make New Appointment</a>
             </div>
             @if ($success ?? false)
                 <div class="my-2 p-4 bg-gray-300">
