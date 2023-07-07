@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\Consultant;
 use App\Models\Day;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
@@ -14,7 +15,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::all();
+        $appointments = Appointment::where('user_id', '=', Auth::user()->id);
         return view('app.appointments.index', compact('appointments'));
     }
 
@@ -23,19 +24,10 @@ class AppointmentController extends Controller
      */
     public function create(Request $request)
     {
-        $request->replace([
-            'date' => date('Y-m-d'),
-        ]);
-        $day = Day::firstOrCreate([
-            'date' => $request->date,
-         ], []);
+       
+        $consultants = Consultant::all();
          
-         $consultants = Consultant::all();
-        $intervals = $day->intervals;
-        if(count($intervals) < 1) {
-            $intervals = $day->makeIntervals()->$intervals;
-        };
-        return view('app.appointments.create', compact('intervals', 'consultants'));
+        return view('app.appointments.create', compact('consultants'));
     }
 
     /**
@@ -48,7 +40,14 @@ class AppointmentController extends Controller
             'description' => $request->description ?? '',
             'consultant_id' => $request->consultant_id,
             'interval_id' => $request->interval_id,
-        ]);
+        ])->refresh();
+
+        if($appointment) {
+            return view('app.appointments.show', compact('appointment'))->with(['success' => 'appointment created successfully']);
+        } else {
+            $appointments = Appointment::where('user_id', '=', Auth::user()->id);
+            return view('app.appointments.index', compact('appointments'))->with(['error' => 'could not create appointment']);
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Models\Consultant;
 use App\Models\Day;
 use App\Models\Interval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class IntervalController extends Controller
 {
@@ -18,10 +19,18 @@ class IntervalController extends Controller
     }
 
     public function intervals(Request $request, Consultant $consultant)
-    {
+    {   $date = $request->date;
+        $cdate = Carbon::parse($date);
+        if(!$cdate->isWeekday()) {
+            abort(400, "Error. $cdate->englishDayOfWeek, is not a weekday");
+        }
         $day = Day::firstOrCreate([
             'date' => $request->date,
          ], []);
+        $intervals = $day->intervals;
+        if(count($intervals) < 1) {
+            $intervals = $day->makeIntervals()->$intervals;
+        };
         $consultantBookedIntervals = $consultant->appointments()->whereIn('interval_id', $day->intervals->pluck('id'))->pluck('interval_id');
         $intervals = $day->intervals->whereNotIn('id', $consultantBookedIntervals);
 

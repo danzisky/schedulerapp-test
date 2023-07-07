@@ -80,11 +80,17 @@
                     this.intervals = res.data
                 })
                 .catch(err => {
-                    alert(err)
+                    alert(err?.response?.data?.message)
                     console.error(err);
                 })
             },
         },
+        watch: {
+            date() {
+                // alert(this.date)
+                return this.intervals = []
+            }
+        }
     }).mount('#app')
     </script>
 </x-app-layout>
