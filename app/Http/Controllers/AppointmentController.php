@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Consultant;
 use App\Models\Day;
 use Illuminate\Http\Request;
 
@@ -29,11 +30,12 @@ class AppointmentController extends Controller
             'date' => $request->date,
          ], []);
          
+         $consultants = Consultant::all();
         $intervals = $day->intervals;
         if(count($intervals) < 1) {
             $intervals = $day->makeIntervals()->$intervals;
         };
-        return view('app.appointments.create');
+        return view('app.appointments.create', compact('intervals', 'consultants'));
     }
 
     /**

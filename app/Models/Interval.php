@@ -11,6 +11,8 @@ class Interval extends Model
 
     protected $fillable = ['from', 'to'];
 
+    protected $with = ['appointment'];
+
     public function appointment() {
         return $this->hasOne(Appointment::class);
     }

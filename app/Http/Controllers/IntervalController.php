@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultant;
+use App\Models\Day;
 use App\Models\Interval;
 use Illuminate\Http\Request;
 
@@ -13,6 +15,17 @@ class IntervalController extends Controller
     public function index()
     {
         //
+    }
+
+    public function intervals(Request $request, Consultant $consultant)
+    {
+        $day = Day::firstOrCreate([
+            'date' => $request->date,
+         ], []);
+        $consultantBookedIntervals = $consultant->appointments()->whereIn('interval_id', $day->intervals->pluck('id'))->pluck('interval_id');
+        $intervals = $day->intervals->whereNotIn('id', $consultantBookedIntervals);
+
+        return $intervals; 
     }
 
     /**

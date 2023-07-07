@@ -29,10 +29,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::post('consultants/{consultant}/interval', [IntervalController::class, 'intervals'])->name('consultants.intervals');
+    Route::resource('appointments', AppointmentController::class);
+    Route::resource('consultants', ConsultantController::class);
+    Route::resource('intervals', IntervalController::class);
 });
 
-Route::resource('appointments', AppointmentController::class);
-Route::resource('consultants', ConsultantController::class);
-Route::resource('intervals', IntervalController::class);
 
 require __DIR__.'/auth.php';
