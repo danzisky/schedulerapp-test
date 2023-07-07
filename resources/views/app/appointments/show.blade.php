@@ -27,6 +27,12 @@
                         Consultant: {{ $appointment->consultant->name }}
                     </div> 
                     <div>
+                        Title: {{ $appointment->title }}
+                    </div> 
+                    <div>
+                        Description: {{ $appointment->description }}
+                    </div> 
+                    <div>
                         Date: {{ $appointment->interval->day->date }}
                     </div> 
                     <div>
