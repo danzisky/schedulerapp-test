@@ -11,7 +11,7 @@
             <div class="flex flex-row space-x-4">
                 <div class="w-full flex flex-col space-y-4 max-w-3xl">
                     <div>
-                        <input type="date" value="" name="" id="" v-model="date">
+                        <input type="date" value="" name="" id="" v-model="date" min="{{ date('Y-m-d') }}">
                     </div>
                     @foreach ($consultants as $consultant)
                         <div class="w-full p-4 flex justify-between  items-center bg-white">
