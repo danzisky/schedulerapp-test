@@ -12,14 +12,31 @@
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
+    <div class="m-4">
+        <div>
+            {{ $user->profile_image }}
+            @isset( $user->profile_image)
+                <img src="{{ $user->profile_image }}" alt="" class="aspect-square h-12 bg-slate-500 rounded-full">
+            @else
+                {{-- <img src="assets/im1.png" alt=""> --}}
+            <div class="aspect-square h-12 bg-slate-500 rounded-full"></div>
+            @endisset
+        </div>
 
+    </div>
+    <form action="{{ route('profile.store_image') }}" method="POST">
+        @csrf
+        <input type="file" id="profileimage" name="profileimage" class="my-4">
+        <button type="submit">save</button>
+    </form>
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
-        @method('patch')
+        @method('put')
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <input type="file" class="my-4" name="profileimage" id="profileimage">
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
