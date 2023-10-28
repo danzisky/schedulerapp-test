@@ -26,6 +26,7 @@ class ProfileController extends Controller
      */
     public function store_image(Request $request): RedirectResponse
     {
+        dd($request->files);
         dd($request->file('profileimage'));
         // dd($_FILES['profileimage']);
         $image_path =  $request->file('profileimage')->store('profile_images');

@@ -24,8 +24,9 @@
         </div>
 
     </div>
-    <form action="{{ route('profile.store_image') }}" method="POST">
+    <form action="{{ route('profile.store_image') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('POST')
         <input type="file" id="profileimage" name="profileimage" class="my-4">
         <button type="submit">save</button>
     </form>
